@@ -1,12 +1,15 @@
 ﻿using GroupProject.View;
-namespace GroupProject.view;
+namespace GroupProject.View;
 
 public partial class App : Application
 {
     public App()
     {
         InitializeComponent();
-        MainPage = new AppShell();
-        Shell.Current.GoToAsync("//Login");
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
     }
 }
