@@ -148,5 +148,21 @@ namespace GroupProject.Services
 
             await cmd.ExecuteNonQueryAsync();
         }
+        public static async Task<bool> SendMfaCodeAsync(string email)
+        {
+            string code = new Random().Next(100000, 999999).ToString();
+            Preferences.Set("MfaCode", code);
+            Preferences.Set("MfaEmail", email);
+
+            return await EmailService.SendMfaCodeEmailAsync(email, code);
+        }
+
+        public static async Task<bool> VerifyMfaCodeAsync(string email, string code)
+        {
+            string storedCode = Preferences.Get("MfaCode", "");
+            string storedEmail = Preferences.Get("MfaEmail", "");
+
+            return storedEmail == email && storedCode == code;
+        }
     }
 }
